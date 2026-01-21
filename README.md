@@ -1,2 +1,3 @@
-# laser-air-controller
-A circuit for monitoring for a laser cutter's assist air supply, and stopping the machine if it is not present.
+# Laser Monitor 
+
+This circuit will monitor a laser cutter's filter control and air input, and ensure both are operating properly when the laser is on. If not, flash a warning for the user. 
