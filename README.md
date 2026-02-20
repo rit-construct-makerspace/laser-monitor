@@ -8,6 +8,7 @@ This circuit will monitor a laser cutter's filter control and air input, and ens
 * 12v >3A Barrel Jack Power Supply
 * Andon Light Tower (12v)
 * DB9 Extension Cable (Connect Laser to Laser Monitor)
+* 3mm ID flex hose (OD sized to fit current system, 8mm normal)
 * SparkFun 14 Segment Dispaly COM-16916 (Optional) + QWIIC to 2.54mm DuPont cable
 * Threaded Rubber Magnet (1/4-20 thread)
 * Hardware
