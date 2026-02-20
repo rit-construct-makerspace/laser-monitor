@@ -1,6 +1,9 @@
 // Laser Monitor 
 // This circuit monitors air pressure and fume extractor status for a laser cutter.
 
+#define VERSION "V1.0.0-A"
+#define HWVer "V1.0.0"
+
 #include <avr/wdt.h>
 #include <Wire.h>
 #include <EEPROM.h>
@@ -101,14 +104,31 @@ void loop() {
       incoming.remove(0, 2);
       startDelay = incoming.toInt();
       EEPROM.put(ADDR_START_DELAY, startDelay);
+      Serial.print(F("Delay set to: "));
+      Serial.print(startDelay);
+      Serial.print(F(" milliseconds. ("));
+      float airSeconds = startDelay / 1000.0;
+      Serial.print(airSeconds);
+      Serial.println(F(" seconds)."));
     } 
     else if (command == 'a') {
       incoming.remove(0, 2);
       airThreshold = incoming.toInt();
       EEPROM.put(ADDR_AIR_THRESHOLD, airThreshold);
+      Serial.print(F("Air Threshold Set to: "));
+      Serial.println(airThreshold);
     } 
+    else if (command == 'v' || command == 'i'){
+      Serial.println(F("Laser Monitor"));
+      Serial.println(F("Developed by RIT SHED Makerspace"));
+      Serial.println(F("make.rit.edu"));
+      Serial.println(F("Licensed: CERN-OHL-S 2.0"));
+      Serial.println(F("Source: https://github.com/rit-construct-makerspace/laser-monitor"));
+      Serial.print(F("Hardware Version: ")); Serial.println(HWVer);
+      Serial.print(F("Software Version: ")); Serial.println(VERSION);
+    }
     else {
-      Serial.println(F("Commands: c (status), d [ms] (delay), a [val] (threshold), b [0-15] (bright)"));
+      Serial.println(F("Commands: c (status), d [ms] (delay), a [val] (threshold), b [0-15] (bright), v (version), i (info)"));
     }
   }
 
@@ -124,6 +144,7 @@ void loop() {
 void runMonitor() {
   unsigned long startTime = millis();
   bool blinking = false;
+  bool FirstSerial = 0;
   
   while (digitalRead(PIN_START_READ)) {
     // 1. Determine State
@@ -132,6 +153,10 @@ void runMonitor() {
     // 2. Serial Passthrough
     if (Serial.available()) {
       while(Serial.available()) Serial.read();
+      if(!FirstSerial){
+        FirstSerial = 1;
+        Serial.println(F("Warning: while the laser is operating, all USB commands ignored except current state."));
+      }
       printCurrentState();
     }
 
