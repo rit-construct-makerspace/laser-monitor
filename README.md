@@ -4,7 +4,7 @@ This circuit will monitor a laser cutter's filter control and air input, and ens
 
 ## Setup
 * Connect the fume extractor control line to the female DB9 of the laser monitor.
-  * If using V1.0.**0** hardware, must invert the pinout
+  * If using V1.0.**0** hardware, must invert the pinout with an adapter cable. 
 * Connect the male DB9 on the laser monitor to the laser cutter's fume control output.
 * Cut the air line to the laser cutter, and install the flex host T-joint.
 * Connect 3mm ID tube to the air transducer on the PCB, and the other side to the T-joint.
