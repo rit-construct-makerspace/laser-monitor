@@ -26,6 +26,7 @@ This circuit will monitor a laser cutter's filter control and air input, and ens
 * 12v >3A Barrel Jack Power Supply
 * Andon Light Tower (12v) With Buzzer
   * Suggested that a blinking red light is used
+  * Common anode or common cathode systems permitted, set control mode switch accordingly.
 * DB9 Extension Cable (Connect Laser to Laser Monitor)
 * Flex Hose T-Joint
 * 3mm ID Flex Hose (OD sized to fit current system, 8mm normal)
