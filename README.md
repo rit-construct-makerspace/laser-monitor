@@ -11,7 +11,14 @@ This circuit will monitor a laser cutter's filter control and air input, and ens
 * Connect 3mm ID tube to the air transducer on the PCB, and the other side to the T-joint.
 * Connect 12v power supply.
 * Connect laser monitor via USB to computer, open serial terminal with baud rate 115200.
-* TODO: Configuration via USB.
+* Send the following config commands;
+  * Set the start delay with d [ms], i.e. "d 10000" for a 10-second startup
+    * Make sure to set the same startup time in the Epilog laser
+  * Set the air pressure threshold with a [val], i.e. "a 7000000"
+    * Tip: use "c" to see the current air monitor reading to determine a threshold appropriate for your system.
+  * Set the filter full warning with w [0/1], i..e "w 1" if you want to be warned when the filter is reporting full
+    * This does not disable the fault response, just the low pressure filter warning.
+  * You should be all set! Make sure to do tests on the system.
 
 ## Bill of Materials
 * Assembled PCB (See Electronics Folder)
