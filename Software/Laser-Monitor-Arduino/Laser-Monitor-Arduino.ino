@@ -29,6 +29,7 @@ const byte PIN_ACS_INTERRUPT = PIN_PD7;
 const int ADDR_AIR_THRESHOLD = 0;
 const int ADDR_START_DELAY   = 10;
 const int ADDR_BRIGHTNESS    = 20;
+const int ADDR_WARNING       = 30;
 
 // Variables
 byte brightness           = 0;
@@ -36,6 +37,7 @@ long airThreshold         = 0;
 long startDelay           = 0;
 unsigned long flashTimer  = 0;
 bool flashState           = false;
+bool filterWarning        = false;
 
 // Function Prototypes
 void runMonitor();
@@ -57,6 +59,7 @@ void setup() {
   EEPROM.get(ADDR_AIR_THRESHOLD, airThreshold);
   EEPROM.get(ADDR_START_DELAY, startDelay);
   EEPROM.get(ADDR_BRIGHTNESS, brightness);
+  EEPROM.get(ADDR_WARNING, filterWarning);
 
   display.setBrightness(brightness);
 
@@ -127,8 +130,18 @@ void loop() {
       Serial.print(F("Hardware Version: ")); Serial.println(HWVer);
       Serial.print(F("Software Version: ")); Serial.println(VERSION);
     }
+    else if (command == 'w'){
+      incoming.remove(0, 2);
+      filterWarning = incoming.toInt();
+      EEPROM.put(ADDR_WARNING, filterWarning);
+      if(filterWarning){
+        Serial.println(F("Filter full warning enabled."));
+      } else{
+        Serial.println("Filter full warning disabled.");
+      }
+    }
     else {
-      Serial.println(F("Commands: c (status), d [ms] (delay), a [val] (threshold), b [0-15] (bright), v (version), i (info)"));
+      Serial.println(F("Commands: c (status), d [ms] (delay), a [val] (threshold), b [0-15] (bright), w [0/1] (filter warning), v (version), i (info)"));
     }
   }
 
@@ -182,7 +195,7 @@ void runMonitor() {
       }
 
       // Check Non-Critical Warnings
-      if (!digitalRead(PIN_LP_READ)) {
+      if (!digitalRead(PIN_LP_READ) && filterWarning) {
         display.print("FULL");
         blinking = true;
         Serial.println(F("WARNING: Low Pressure (Check Filter)"));
